@@ -12,17 +12,28 @@ function [meta,metastart] = meta_read_from_OIR(fid)
 % version 2 and version 3 of the GNU General Public License for more
 % details. You should have received a copy of the GNU General Public
 % License along with this program;If not, see http://www.gnu.org/licenses/.
-
+if numel(fid)==1
 frewind(fid)
-buf=fread(fid,[10000000],'uint8=>uint8');
+buf=fread(fid,10000000,'uint8=>uint8');
+else
+    buf=fid;
+end
+% loc_110=find(buf==110);
+% loc_105_s1=find(buf==105)+1;
+% loc_101_s2=find(buf==101)+2;
+% loc_108_s3=find(buf==108)+3;
+% loc_105_s4=find(buf==105)+4;
+% loc_102_s5=find(buf==102)+5;
+% loc_60_s6=find(buf==60)+6;
+% metastart=intersect(intersect(intersect(intersect(intersect(intersect(loc_110,loc_105_s1),loc_101_s2),loc_108_s3),loc_105_s4),loc_102_s5),loc_60_s6);
 loc_110=find(buf==110);
-loc_105_s1=find(buf==105)+1;
-loc_101_s2=find(buf==101)+2;
-loc_108_s3=find(buf==108)+3;
-loc_105_s4=find(buf==105)+4;
-loc_102_s5=find(buf==102)+5;
-loc_60_s6=find(buf==60)+6;
-metastart=intersect(intersect(intersect(intersect(intersect(intersect(loc_110,loc_105_s1),loc_101_s2),loc_108_s3),loc_105_s4),loc_102_s5),loc_60_s6);
+loc_105_s1=loc_110(buf(loc_110-1)==105);
+loc_101_s2=loc_105_s1(buf(loc_105_s1-2)==101);
+loc_108_s3=loc_101_s2(buf(loc_101_s2-3)==108);
+loc_105_s4=loc_108_s3(buf(loc_108_s3-4)==105);
+loc_102_s5=loc_105_s4(buf(loc_105_s4-5)==102);
+metastart=loc_102_s5(buf(loc_102_s5-6)==60);
+% metastart=intersect(intersect(intersect(intersect(intersect(intersect(loc_110,loc_105_s1),loc_101_s2),loc_108_s3),loc_105_s4),loc_102_s5),loc_60_s6);
 
 if isempty(metastart)~=0
     disp('metadata is not found')
