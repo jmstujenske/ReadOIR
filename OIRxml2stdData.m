@@ -75,7 +75,7 @@ stdData.Analog{1} = 0;
 stdData.Metadata.creation_date = date;
 stdData.Metadata.identifier = fullpath;
 
-% Šeímetadata‚ÌˆÊ’u
+% Å eÅ½Ã­metadataâ€šÃŒË†ÃŠâ€™u
 p_resonant = strfind(meta,'<lsmimage:scannerSettings type="Resonant">');
 p_galvano = strfind(meta,'<lsmimage:scannerSettings type="Galvano">');
 p_timelapse = strfind(meta,'<commonparam:axis>TIMELAPSE</commonparam:axis>');
@@ -95,7 +95,7 @@ p_pmtvol = strfind(meta,'<lsmparam:voltage>');
 
 if strfind(meta,'<commonparam:axis xsi:type="commonparam:ZAxisParam"')
     
-    % chop metafileisecure uniqueness of fieldnamej
+    % chop metafileï¿½isecure uniqueness of fieldnameï¿½j
     % scanner
     if strcmp(extract_xmldata(meta,'lsmimage:scannerType',1),'Resonant')~=0
         meta_scan = meta(p_resonant:end);
@@ -118,6 +118,7 @@ if strfind(meta,'<commonparam:axis xsi:type="commonparam:ZAxisParam"')
     end
 
     % Metadata
+    stdData.Metadata.bit_depth = extract_xmldata(meta,'commonphase:bitCounts',0);
      stdData.Metadata.sizeX = extract_xmldata(meta_scan,'commonparam:width',0);     % size of reference image. modified by MK, 20161122
      stdData.Metadata.sizeY = extract_xmldata(meta_scan,'commonparam:height',0);    % size of reference image. modified by MK, 20161122
   %   stdData.Metadata.sizeX = extract_xmldata(meta_scan,'commonimage:width',1);      % size of ROI scan image. modified by MK, 20161122
@@ -148,7 +149,7 @@ if strfind(meta,'<commonparam:axis xsi:type="commonparam:ZAxisParam"')
     stdData.AcqMetadata.AcqDate = extract_xmldata(meta,'base:creationDateTime',1);
     for c=1:nargin-4
 %        if strfind(laser_id{c},'(sub)')
- %   stdData.AcqMetadata.LaserWaveLength{c,1} = 1040; %systemˆË‘¶
+ %   stdData.AcqMetadata.LaserWaveLength{c,1} = 1040; %systemË†Ã‹â€˜Â¶
   %      else
   %          stdData.AcqMetadata.LaserWaveLength{c,1} = extract_xmldata(meta,'commonimage:wavelength',0);
   %      end
