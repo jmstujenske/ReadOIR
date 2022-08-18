@@ -1,5 +1,7 @@
 # Fast edit
+These scripts are used for reading Olympus .oir files into matlab or converting to tiff.
 This script was editted by J. M. Stujenske in June 2022 to increase the speed of the functions. This consists of minimal edits to the original code, but speeds up reading oir files substantially.
+oir2tiff.m written in August 2022 to directly convert oirs to tiffs. Requires the tiff read/write repository at https://github.com/jmstujenske/Matlab_FastTiffReadWrite .
 
 # oir2stdData
 MATLAB script for converting Olympus .oir image files into MATLAB readable images and metadata. <br>
