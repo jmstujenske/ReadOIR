@@ -1,11 +1,11 @@
-function oir2tiff(path,opts)
+function tif_name=oir2tiff(path,opts)
 %
 % input variables
 % path: filename with path
 % opts: split channels to separate tiffs,'split' or 'nosplit' (default)
 % 
 % output variables
-% NONE - writes tif files
+% tif_name - name of tif file
 %
 %J.M.Stujenske, 2022
 %Written based on code by Yasuhiro R. Tanaka, 2014, 2017
@@ -89,18 +89,28 @@ if n_ch>2
 end
         flag=0;
         [image_out,ref,index] = image_read_from_OIR(fid,sizeX,sizeY,n_tz,ref_sizeX,ref_sizeY,line_rate,flag,n_ch,accu_flag);
-fid_temp=fopen(filelist(end).name,'r');fseek(fid_temp,0,'eof');flen=ftell(fid_temp);fclose(fid_temp);
-        fid_temp2=fopen(filelist(end-1).name,'r');fseek(fid_temp,0,'eof');flen2=ftell(fid_temp);fclose(fid_temp);
-n_frames=index*n_ch+(index+1)*n_ch*(length(filelist)-1)+floor(index+1-(flen2-flen)/sizeX/sizeY/ceil(bit_depth/8));
+        if length(filelist)>2
+            fid_temp=fopen(filelist(end).name,'r');fseek(fid_temp,0,'eof');flen=ftell(fid_temp);fclose(fid_temp);
+            fid_temp2=fopen(filelist(end-1).name,'r');fseek(fid_temp,0,'eof');flen2=ftell(fid_temp);fclose(fid_temp);
+            n_frames=index*n_ch+(index+1)*n_ch*(length(filelist)-1)+(index+1)*2-ceil((flen2-flen)/sizeX/sizeY/ceil(bit_depth/8));
+        elseif length(filelist)>1
+            fid_temp=fopen(filelist(end).name,'r');fseek(fid_temp,0,'eof');flen=ftell(fid_temp);fclose(fid_temp);
+            n_frames=index*n_ch+(index+1)*n_ch*(length(filelist)-1)+(index+1)*2-ceil((1.077e9-flen)/sizeX/sizeY/ceil(bit_depth/8));
+        else
+            n_frames=index*n_ch;
+        end
 imagedesc=image_desc_gen(n_ch,n_z,floor(n_frames/n_ch/n_z),pixel_size,bit_depth);
         if n_ch>1
 %     if ~exist(fullfile(folder,[filename,'_chan',num2str(ch_rep),'.tif']),'file')
 if opt==1
+    tif_name=cell(2,1);
     for ch_rep=1:n_ch
-        TiffWriter{ch_rep}=Fast_BigTiff_Write(fullfile(folder,[filename,'_chan',num2str(ch_rep),'.tif']),pixel_size);
-        end
+        tif_name{ch_rep}=fullfile(folder,[filename,'_chan',num2str(ch_rep),'.tif']);
+        TiffWriter{ch_rep}=Fast_BigTiff_Write(tif_name{ch_rep},pixel_size);
+    end
 else
-      TiffWriter{1}=Fast_BigTiff_Write(fullfile(folder,[filename,'.tif']),pixel_size,[],imagedesc);
+    tif_name=fullfile(folder,[filename,'.tif']);
+      TiffWriter{1}=Fast_BigTiff_Write(tif_name,pixel_size,[],imagedesc);
       TiffWriter{2}=TiffWriter{1};
 end
 %     else
