@@ -1,4 +1,4 @@
-function tif_name=oir2tiff(path,opts)
+function tif_name=oir2tiff(path,opts,savepath)
 %
 % input variables
 % path: filename with path
@@ -23,6 +23,11 @@ function tif_name=oir2tiff(path,opts)
 if nargin<2 || isempty(opts)
     opts='nosplit';
 end
+[folder,filename,ext]=fileparts(path);
+
+if nargin <3||isempty(savepath)
+    savepath=folder;
+end
 switch opts
     case 'split'
         opt=1;
@@ -31,7 +36,6 @@ switch opts
     otherwise
         error('Invalid opts type.')
 end
-[folder,filename,ext]=fileparts(path);
 
 if isempty(strfind(ext,'.oir'))
     error('input is restricted to OIR files')
@@ -105,11 +109,11 @@ imagedesc=image_desc_gen(n_ch,n_z,floor(n_frames/n_ch/n_z),pixel_size,bit_depth)
 if opt==1
     tif_name=cell(2,1);
     for ch_rep=1:n_ch
-        tif_name{ch_rep}=fullfile(folder,[filename,'_chan',num2str(ch_rep),'.tif']);
+        tif_name{ch_rep}=fullfile(savepath,[filename,'_chan',num2str(ch_rep),'.tif']);
         TiffWriter{ch_rep}=Fast_BigTiff_Write(tif_name{ch_rep},pixel_size);
     end
 else
-    tif_name=fullfile(folder,[filename,'.tif']);
+    tif_name=fullfile(savepath,[filename,'.tif']);
       TiffWriter{1}=Fast_BigTiff_Write(tif_name,pixel_size,[],imagedesc);
       TiffWriter{2}=TiffWriter{1};
 end
