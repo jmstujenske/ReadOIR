@@ -24,7 +24,7 @@ output_list=oir2stdData(pathToFile,0,0);
 ```
 
 ## Trouble shoot
-If an error occurred, try,<br>
+If an error occurred, try:<br>
 ```
 [~,stdData]=oir2stdData(pathToFile,1,1);
 ```
