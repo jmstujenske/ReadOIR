@@ -1,4 +1,5 @@
 function tif_name=oir2tiff(path,opts,savepath)
+%tif_name=oir2tiff(path,opts,savepath)
 %
 % input variables
 % path: filename with path
@@ -136,15 +137,15 @@ else
             end
         imimage{ch_rep}(:,:,floor(index/n_z)*n_z+1:index) = [];
         imimage{ch_rep} = reshape(imimage{ch_rep},sizeY,sizeX,n_z,floor(index/n_z));
-         n_t=size(imimage{ch_rep},4);
+         n_t=size(imimage{ch_rep},3);
          if opt==1
-         for a=1:n_t;TiffWriter{ch_rep}.WriteIMG(imimage{ch_rep}(:,:,:,a)');end
+         for a=1:n_t;TiffWriter{ch_rep}.WriteIMG(imimage{ch_rep}(:,:,a)');end
          end
        end
        if opt==2
          for a=1:n_t
                 for ch_rep=1:n_ch
-                    TiffWriter{ch_rep}.WriteIMG(imimage{ch_rep}(:,:,:,a)');
+                    TiffWriter{ch_rep}.WriteIMG(imimage{ch_rep}(:,:,a)');
                 end
          end
        end
