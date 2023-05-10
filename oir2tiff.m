@@ -1,9 +1,11 @@
-function tif_name=oir2tiff(path,opts,savepath)
+function tif_name=oir2tiff(path,opts,savepath,imagejheader)
 %tif_name=oir2tiff(path,opts,savepath)
 %
 % input variables
 % path: filename with path
 % opts: split channels to separate tiffs,'split' or 'nosplit' (default)
+% savepath: where to save tiff (default: path folder)
+% imagejheader: whether to append an imagej description (default: false)
 %
 % output variables
 % tif_name - name of tif file
@@ -25,7 +27,9 @@ if nargin<2 || isempty(opts)
     opts='nosplit';
 end
 [folder,filename,ext]=fileparts(path);
-
+if nargin<4 || isempty(imagejheader)
+    imagejheader=false;
+end
 if nargin <3||isempty(savepath)
     savepath=folder;
 end
@@ -104,7 +108,11 @@ elseif length(filelist)>1
 else
     n_frames=index*n_ch;
 end
-imagedesc=image_desc_gen(n_ch,n_z,floor(n_frames/n_ch/n_z),pixel_size,bit_depth);
+if imagejheader
+    imagedesc=image_desc_gen(n_ch,n_z,floor(n_frames/n_ch/n_z),pixel_size,bit_depth);
+else
+    imagedesc=[];
+end
 if n_ch>1
     %     if ~exist(fullfile(folder,[filename,'_chan',num2str(ch_rep),'.tif']),'file')
     if opt==1
