@@ -132,7 +132,8 @@ if n_ch>1
 
 else
     %     if ~exist(fullfile(folder,[filename,'.tif']),'file')
-    TiffWriter{1}=Fast_BigTiff_Write(fullfile(folder,[filename,'.tif']));
+    tif_name=fullfile(savepath,[filename,'.tif']);
+    TiffWriter{1}=Fast_BigTiff_Write(fullfile(savepath,[filename,'.tif']));
     %     else
     %         error('tif already exists.');
     %     end
