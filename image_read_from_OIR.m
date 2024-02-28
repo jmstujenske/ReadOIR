@@ -16,7 +16,7 @@ function [image,ref,index] = image_read_from_OIR(fid,sizeX,sizeY,n_tz,ref_sizeX,
 % details. You should have received a copy of the GNU General Public
 % License along with this program;If not, see http://www.gnu.org/licenses/.
 %
-%Editted for speed and to tolerate large files
+%Edited for speed and to tolerate large files
 %Joseph M. Stujenske, 2022
 %
 
@@ -97,7 +97,6 @@ for j=1:num_divide
             end
         end
 end
-
 index = floor(length(fstart_p{num_divide})/n_ch);
 ref=zeros(ref_sizeY,ref_sizeX,n_ch,'uint16');
 end
